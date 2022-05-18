@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Project;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,4 @@ use App\Models\Project;
 |
 */
 
-Route::get('/', function () {
-    return view('index', Project::all());
-});
+Route::get('/', [ProjectController::class, 'index']);
