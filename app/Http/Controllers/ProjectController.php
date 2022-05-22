@@ -10,7 +10,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        return view('index', ['projects' => Project::all()]);
+        return view('Project/index', ['projects' => Project::all()]);
     }
 
     public function create()
@@ -23,14 +23,14 @@ class ProjectController extends Controller
 
         $project->save();
 
-        return view('index', ['projects' => Project::all()]);
+        return view('Project/index', ['projects' => Project::all()]);
     }
 
     public function show(string $id)
     {   
         $project = Project::where('id', $id)->firstOrFail();
 
-        return view('dashboard', [
+        return view('Project/dashboard', [
             'project' => $project,
             'students' => Student::where('project_name', $project['project_name'])->get()
         ]);

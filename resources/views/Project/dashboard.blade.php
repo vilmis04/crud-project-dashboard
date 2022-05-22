@@ -8,15 +8,9 @@ foreach ($students as $student) {
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+@extends('layout/layout')
+
+@section('content')
     <div>Project: <strong>{{ $project['project_name'] }}</strong></div>
     <div>Number of groups: <strong>{{ $project['number_of_groups'] }}</strong></div>
     <div>Students per group: <strong>{{ $project['students_per_group'] }}</strong></div>
@@ -40,9 +34,10 @@ foreach ($students as $student) {
             <?php endforeach ?>
         </tbody>
     </table>
-    <button method='GET' action>
-        Add new student
-    </button>
+    <form method='GET' action='/project/<?= $project['id'] ?>/add-student'>
+        @csrf
+        <input type="submit" value="Add new student">
+    </form>
     <div>Groups</div>
     <?php for($i=1; $i<=intval($project['number_of_groups']); $i++): ?>
 
@@ -61,9 +56,14 @@ foreach ($students as $student) {
                             <td>
                             <select>
                                     <option value="">Assign student</option>
-                                    <?php foreach($sortedStudents['-'] as $student): ?>
+                                    <?php
+                                        if (!isset($sortedStudents['-'])) {
+                                            $openings--;
+                                            continue;
+                                        }; 
+                                        foreach($sortedStudents['-'] as $student): ?>
                                         <option value="<?= $student['id'] ?>"><?= $student['student_name'] ?></option>
-                                    <?php endforeach ?>
+                                        <?php endforeach ?>
                                 </select>
                             </td>
                         </tr>
@@ -85,9 +85,14 @@ foreach ($students as $student) {
                                 <td>
                                     <select>
                                         <option value="">Assign student</option>
-                                        <?php foreach($sortedStudents['-'] as $student): ?>
-                                            <option value="<?= $student['id'] ?>"><?= $student['student_name'] ?></option>
-                                        <?php endforeach ?>
+                                        <?php
+                                            if (!isset($sortedStudents['-'])) {
+                                                $openings--;
+                                                continue;
+                                            };
+                                            foreach($sortedStudents['-'] as $student): ?>
+                                                <option value="<?= $student['id'] ?>"><?= $student['student_name'] ?></option>
+                                            <?php endforeach ?>
                                     </select>
                                 </td>
                             </tr>
@@ -98,5 +103,4 @@ foreach ($students as $student) {
     </table>
 
     <?php endfor ?>
-</body>
-</html>
+@endsection
