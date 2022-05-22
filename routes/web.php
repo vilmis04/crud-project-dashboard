@@ -21,3 +21,4 @@ Route::get('/project/{id}', [ProjectController::class, 'show']);
 Route::get('/project/{id}/add-student', [StudentController::class, 'create']);
 Route::post('/project/{id}/add-student', [StudentController::class, 'store']);
 Route::delete('/project/{project_id}/delete-student/{student_id}', [StudentController::class, 'delete']);
+Route::put('/project/{project_id}/assign-student/{group}', [StudentController::class, 'update']);

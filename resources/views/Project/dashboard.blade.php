@@ -6,6 +6,8 @@ foreach ($students as $student) {
     $sortedStudents[$student['group']][] = $student;
 }
 
+$selectCounter = 0;
+
 ?>
 
 @extends('layout/layout')
@@ -38,7 +40,6 @@ foreach ($students as $student) {
                             @method('DELETE')
                             <input type="submit" value="Delete">
                         </form> 
-                        <!-- <a href="/project/<?= $project['id'] ?>/delete-student/<?= $student['id'] ?>" method='POST'>Delete</a> </td> -->
                 </tr>
             <?php endforeach ?>
         </tbody>
@@ -57,27 +58,37 @@ foreach ($students as $student) {
             </tr>
         </thead>
         <tbody>
+            <form
+                action="/project/<?= $project['id'] ?>/assign-student/<?= $i ?>"
+                method="POST">
+                @csrf
+                @method('PUT')
             <?php if (!isset($sortedStudents[$i])): ?>
                 <?php
                     $openings = intval($project['students_per_group']);
                     while ($openings > 0): ?>
                         <tr>
                             <td>
-                            <select>
-                                    <option value="">Assign student</option>
-                                    <?php
-                                        if (!isset($sortedStudents['-'])) {
-                                            $openings--;
-                                            continue;
-                                        }; 
-                                        foreach($sortedStudents['-'] as $student): ?>
-                                        <option value="<?= $student['id'] ?>"><?= $student['student_name'] ?></option>
-                                        <?php endforeach ?>
-                                </select>
-                            </td>
-                        </tr>
-                        <?php $openings-- ?>
-                    <?php endwhile ?>
+                                    <select name='<?= 'assigned_'.$selectCounter ?>' onchange="this.form.submit()">
+                                        <option value="">Assign student</option>
+                                        <?php
+                                            if (!isset($sortedStudents['-'])) {
+                                                $openings--;
+                                                $selectCounter++;
+                                                continue;
+                                            }
+                                            foreach($sortedStudents['-'] as $student): ?>
+                                                <option value="<?= $student['id'] ?>">
+                                                    <?= $student['student_name'] ?>
+                                                </option>
+                                            <?php endforeach ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <?php 
+                                $openings--;
+                                $selectCounter++ ?>
+                            <?php endwhile ?>
             <?php else: ?>
                 <?php
                     $counter = 0;
@@ -85,31 +96,38 @@ foreach ($students as $student) {
                         <tr>
                             <td> <?= $student['student_name'] ?> </td>
                         </tr>
-                    <?php
+                        <?php
                         $counter++; 
-                        endforeach;
-                        $openings = intval($project['students_per_group']) - $counter;
-                        while ($openings > 0): ?>
+                    endforeach;
+                    $openings = intval($project['students_per_group']) - $counter;
+                    while ($openings > 0): ?>
                             <tr>
                                 <td>
-                                    <select>
+                                    <select name='<?= 'assigned_'.$selectCounter ?>' onchange="this.form.submit()">
                                         <option value="">Assign student</option>
                                         <?php
                                             if (!isset($sortedStudents['-'])) {
                                                 $openings--;
+                                                $selectCounter++;
                                                 continue;
-                                            };
+                                            }
                                             foreach($sortedStudents['-'] as $student): ?>
-                                                <option value="<?= $student['id'] ?>"><?= $student['student_name'] ?></option>
+                                                <option value="<?= $student['id'] ?>">
+                                                    <?= $student['student_name'] ?>
+                                                </option>
                                             <?php endforeach ?>
                                     </select>
-                                </td>
-                            </tr>
-                            <?php $openings-- ?>
-                        <?php endwhile ?>
+                                        </td>
+                                    </tr>
+                                    <?php 
+                                        $openings--;
+                                        $selectCounter++ ?>
+                                    <?php endwhile ?>
             <?php endif ?>
+        </form> 
         </tbody>
     </table>
-
+    
     <?php endfor ?>
-@endsection
+                            
+    @endsection

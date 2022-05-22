@@ -53,12 +53,22 @@ class StudentController extends Controller
         Student::find($student_id)->delete();
         $project = Project::where('id', $project_id)->firstOrFail();
 
+        return view('Project/dashboard', [
+            'project' => $project,
+            'students' => Student::where('project_name', $project['project_name'])->get()
+        ]);
+    }
 
+    public function update(string $project_id, string $group)
+    {   
+        var_dump($_POST); die;
+        $student_id = $_POST['assigned_student_1'] ?? $_POST['assigned_student_2'];
+        // $student_id = htmlspecialchars($_POST['assigned_student']);
+        $student = Student::find($student_id);
+        $student->group = $group;
+        $student->save();
+        $project = Project::where('id', htmlspecialchars($project_id))->firstOrFail();
 
-        // Route::view('/project/'.$project_id, 'Project/dashboard', [
-        //     'project' => $project,
-        //     'students' => Student::where('project_name', $project['project_name'])->get()
-        // ]);
         return view('Project/dashboard', [
             'project' => $project,
             'students' => Student::where('project_name', $project['project_name'])->get()
