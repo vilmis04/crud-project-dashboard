@@ -16,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProjectController::class, 'index']);
 Route::post('/create-project', [ProjectController::class, 'create']);
-// Route::post('/create-project', [ProjectController::class, 'create'])->name('create');
+Route::get('/project/{id}', [ProjectController::class, 'show']);
