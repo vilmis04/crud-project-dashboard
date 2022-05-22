@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Student;
+use Illuminate\Support\Facades\Route;
 
 class StudentController extends Controller
 {
@@ -41,6 +42,23 @@ class StudentController extends Controller
 
         $student->save();
 
+        return view('Project/dashboard', [
+            'project' => $project,
+            'students' => Student::where('project_name', $project['project_name'])->get()
+        ]);
+    }
+
+    public function delete(string $project_id, string $student_id)
+    {
+        Student::find($student_id)->delete();
+        $project = Project::where('id', $project_id)->firstOrFail();
+
+
+
+        // Route::view('/project/'.$project_id, 'Project/dashboard', [
+        //     'project' => $project,
+        //     'students' => Student::where('project_name', $project['project_name'])->get()
+        // ]);
         return view('Project/dashboard', [
             'project' => $project,
             'students' => Student::where('project_name', $project['project_name'])->get()

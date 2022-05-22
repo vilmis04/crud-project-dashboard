@@ -29,7 +29,16 @@ foreach ($students as $student) {
                 <tr>
                     <td> <?= $student['student_name'] ?> </td>
                     <td> <?= $student['group'] ?> </td>
-                    <td> <a href="" method='POST'>Delete</a> </td>
+                    <td> 
+                        <form
+                            action="/project/<?= $project['id'] ?>/delete-student/<?= $student['id'] ?>"
+                            method="POST"
+                        >
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" value="Delete">
+                        </form> 
+                        <!-- <a href="/project/<?= $project['id'] ?>/delete-student/<?= $student['id'] ?>" method='POST'>Delete</a> </td> -->
                 </tr>
             <?php endforeach ?>
         </tbody>

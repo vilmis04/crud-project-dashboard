@@ -1,3 +1,4 @@
+<?php if (isset($errMessage)) echo $errMessage ?>
 @extends('layout/layout')
 @section('content')
 <form action="/project/<?= $project['id'] ?>/add-student" method='POST'>
