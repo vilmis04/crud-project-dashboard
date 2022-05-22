@@ -48,7 +48,7 @@
         <?php else: ?>
             <?php foreach($projects as $project): ?>
                 <div>
-                    <a href="">{{ $project['project_name'] }}</a>
+                    <a href='/project/<?= $project['id'] ?>' method='GET' >{{ $project['project_name'] }}</a>
                 </div>
             <?php endforeach ?>
         <?php endif ?>
