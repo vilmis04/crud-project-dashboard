@@ -63,34 +63,9 @@ $selectCounter = 0;
                 method="POST">
                 @csrf
                 @method('PUT')
-            <?php if (!isset($sortedStudents[$i])): ?>
+            
                 <?php
-                    $openings = intval($project['students_per_group']);
-                    while ($openings > 0): ?>
-                        <tr>
-                            <td>
-                                    <select name='<?= 'assigned_'.$selectCounter ?>' onchange="this.form.submit()">
-                                        <option value="">Assign student</option>
-                                        <?php
-                                            if (!isset($sortedStudents['-'])) {
-                                                $openings--;
-                                                $selectCounter++;
-                                                continue;
-                                            }
-                                            foreach($sortedStudents['-'] as $student): ?>
-                                                <option value="<?= $student['id'] ?>">
-                                                    <?= $student['student_name'] ?>
-                                                </option>
-                                            <?php endforeach ?>
-                                    </select>
-                                </td>
-                            </tr>
-                            <?php 
-                                $openings--;
-                                $selectCounter++ ?>
-                            <?php endwhile ?>
-            <?php else: ?>
-                <?php
+                    $sortedStudents[$i] = $sortedStudents[$i] ?? [];
                     $counter = 0;
                     foreach($sortedStudents[$i] as $student): ?>
                         <tr>
@@ -104,6 +79,7 @@ $selectCounter = 0;
                             <tr>
                                 <td>
                                     <select name='<?= 'assigned_'.$selectCounter ?>' onchange="this.form.submit()">
+                                    <!-- <select name='assigned_' onchange="this.form.submit()"> -->
                                         <option value="">Assign student</option>
                                         <?php
                                             if (!isset($sortedStudents['-'])) {
@@ -123,7 +99,7 @@ $selectCounter = 0;
                                         $openings--;
                                         $selectCounter++ ?>
                                     <?php endwhile ?>
-            <?php endif ?>
+
         </form> 
         </tbody>
     </table>

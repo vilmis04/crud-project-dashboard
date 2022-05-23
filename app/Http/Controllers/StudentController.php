@@ -61,9 +61,15 @@ class StudentController extends Controller
 
     public function update(string $project_id, string $group)
     {   
-        var_dump($_POST); die;
-        $student_id = $_POST['assigned_student_1'] ?? $_POST['assigned_student_2'];
-        // $student_id = htmlspecialchars($_POST['assigned_student']);
+        $student_id = '';
+        foreach($_POST as $key => $value) {
+            if ($value === '') continue;
+            $name = explode('_', $key);
+            $name = $name[0];
+            if ($name === 'assigned') $student_id = $value;
+
+        }
+
         $student = Student::find($student_id);
         $student->group = $group;
         $student->save();
